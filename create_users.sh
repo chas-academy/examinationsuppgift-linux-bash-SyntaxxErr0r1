@@ -37,7 +37,7 @@ do
   echo "Här är alla andra användare:" >> /home/$namn/welcome.txt
 
   # Hämta listan på alla användare (enklaste sättet)
-  cut -d: -f1 /etc/passwd >> /home/$namn/welcome.txt
+  cut -d: -f1 /etc/passwd | grep -v "^$namn$" >> /home/$namn/welcome.txt
 
   # Ge användaren ägarskap överallt
   chown -R $namn:$namn /home/$namn
