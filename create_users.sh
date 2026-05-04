@@ -15,7 +15,7 @@ exit 1
 fi
 
 # Här börjar loopen för alla namn
-for namn in $@
+for namn in "$@"
 do
   echo "Nu fixar vi användaren: $namn"
 
@@ -23,24 +23,24 @@ do
   useradd -m $namn
 
   # skapa de tre mapparna
-  mkdir /home/$namn/Documents
-  mkdir /home/$namn/Downloads
-  mkdir /home/$namn/Work
+  mkdir -p "/home/$namn/Documents"
+  mkdir -p "/home/$namn/Downloads"
+  mkdir -p "/home/$namn/Work"
 
   # sätt rättigheter: full åtkomst för ägaren, blockera grupp och övriga
-  chmod 700 /home/$namn/Documents
-  chmod 700 /home/$namn/Downloads
-  chmod 700 /home/$namn/Work
+  chmod 700 "/home/$namn/Documents"
+  chmod 700 "/home/$namn/Downloads"
+  chmod 700 "/home/$namn/Work"
 
   # Skapa välkkomstfilen
-  echo "Välkommen $namn" > /home/$namn/welcome.txt
-  echo "Här är alla andra användare:" >> /home/$namn/welcome.txt
+  echo "Välkommen $namn" > "/home/$namn/welcome.txt"
+  echo "Här är alla andra användare:" >> "/home/$namn/welcome.txt"
 
   # Hämta listan på alla användare (enklaste sättet)
-  cut -d: -f1 /etc/passwd | grep -v "^$namn$" >> /home/$namn/welcome.txt
+  cut -d: -f1 /etc/passwd | grep -v "^$namn$" >> "/home/$namn/welcome.txt"
 
   # Ge användaren ägarskap överallt
-  chown -R $namn:$namn /home/$namn
+  chown -R "$namn:$namn" "/home/$namn"
 
   echo "$namn är klar!"
 done
