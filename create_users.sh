@@ -19,8 +19,14 @@ for namn in "$@"
 do
   echo "Nu fixar vi användaren: $namn"
 
+  # kontrollera om användaren redan finns
+  if id "$namn" &>/dev/null; then
+    echo "Användaren $namn finns redan, Hoppa över."
+    continue
+  fi
+
   # Skapa systemanvändare och home directory
-  useradd -m $namn
+  useradd -m "$namn"
 
   # skapa de tre mapparna
   mkdir -p "/home/$namn/Documents"
