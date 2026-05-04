@@ -25,6 +25,9 @@ do
     continue
   fi
 
+  # spara användarelistan innan ny användare skapas
+  existing_users=$(cut -d: -f1 /etc/passwd)
+
   # Skapa systemanvändare och home directory
   useradd -m "$namn"
 
