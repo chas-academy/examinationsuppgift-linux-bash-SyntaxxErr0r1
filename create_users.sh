@@ -19,36 +19,30 @@ for namn in "$@"
 do
   echo "Nu fixar vi användaren: $namn"
 
-  # kontrollera om användaren redan finns
+  # Kontrollera om användaren redan finns
   if id "$namn" &>/dev/null; then
     echo "Användaren $namn finns redan, Hoppa över."
     continue
   fi
 
-  # spara användarelistan innan ny användare skapas
+  #  Hämta listan över befintliga användare
   existing_users=$(cut -d: -f1 /etc/passwd)
 
-  # Skapa systemanvändare och home directory
+  #  Skapa användaren
   useradd -m "$namn"
 
-  # skapa de tre mapparna
-  mkdir -p "/home/$namn/Documents"
-  mkdir -p "/home/$namn/Downloads"
-  mkdir -p "/home/$namn/Work"
+  #  Skapa mappar 
+  mkdir -p "/home/$namn/Documents" "/home/$namn/Downloads" "/home/$namn/Work"
 
-  # sätt rättigheter: full åtkomst för ägaren, blockera grupp och övriga
-  chmod 700 "/home/$namn/Documents"
-  chmod 700 "/home/$namn/Downloads"
-  chmod 700 "/home/$namn/Work"
+  #  Sätt rättigheter
+  chmod 700 "/home/$namn/Documents" "/home/$namn/Downloads" "/home/$namn/Work"
 
-  # Skapa välkkomstfilen
+  #  Skapa välkomstfilen
   echo "Välkommen $namn" > "/home/$namn/welcome.txt"
   echo "$existing_users" >> "/home/$namn/welcome.txt"
   
-  # Ge användaren ägarskap överallt
+  #  Ge användaren ägarskap
   chown -R "$namn:$namn" "/home/$namn"
 
   echo "$namn är klar!"
 done
-
-echo "klar med alla!"
