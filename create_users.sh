@@ -43,11 +43,8 @@ do
 
   # Skapa välkkomstfilen
   echo "Välkommen $namn" > "/home/$namn/welcome.txt"
-  echo "Här är alla andra användare:" >> "/home/$namn/welcome.txt"
-
-  # Hämta listan på alla användare (enklaste sättet)
   echo "$existing_users" >> "/home/$namn/welcome.txt"
-
+  
   # Ge användaren ägarskap överallt
   chown -R "$namn:$namn" "/home/$namn"
 
