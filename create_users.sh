@@ -1,17 +1,17 @@
 #!/bin/bash
 
-# kontrollera att scriptet körs som root
+# Kontrollera att scriptet körs som root
 if [ "$EUID" -ne 0 ]
 then
-echo "Du måste vara root för detta!"
-exit 1
+  echo "Du måste vara root för detta!"
+  exit 1
 fi
 
-#validera argument (minst ett användarnamn skickats in)
+# Validera argument (minst ett användarnamn skickats in)
 if [ $# -eq 0 ]
 then
-echo "Du glömde skriva namn. Ange  ./create_users.sh namn1 namn2"
-exit 1
+  echo "Du glömde skriva namn. Ange ./create_users.sh namn1 namn2"
+  exit 1
 fi
 
 # Här börjar loopen för alla namn
@@ -20,28 +20,29 @@ do
   echo "Nu fixar vi användaren: $namn"
 
   # Kontrollera om användaren redan finns
+  
   if id "$namn" &>/dev/null; then
     echo "Användaren $namn finns redan, Hoppa över."
     continue
   fi
 
-  #  Hämta listan över befintliga användare
+  # 1. Hämta listan över befintliga användare INNAN den nya skapas
   existing_users=$(cut -d: -f1 /etc/passwd)
 
-  #  Skapa användaren
+  # 2. Skapa användaren
   useradd -m "$namn"
 
-  #  Skapa mappar 
+  # 3. Skapa mappar 
   mkdir -p "/home/$namn/Documents" "/home/$namn/Downloads" "/home/$namn/Work"
 
-  #  Sätt rättigheter
+  # 4. Sätt rättigheter (Endast ägaren)
   chmod 700 "/home/$namn/Documents" "/home/$namn/Downloads" "/home/$namn/Work"
 
-  #  Skapa välkomstfilen
+  # 5. Skapa välkomstfilen
   echo "Välkommen $namn" > "/home/$namn/welcome.txt"
   echo "$existing_users" >> "/home/$namn/welcome.txt"
   
-  #  Ge användaren ägarskap
+  # 6. Ge användaren ägarskap över sin hemkatalog
   chown -R "$namn:$namn" "/home/$namn"
 
   echo "$namn är klar!"
