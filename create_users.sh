@@ -33,9 +33,7 @@ do
   echo "Välkommen $namn" > "/home/$namn/welcome.txt"
  
   # Lägg till en lista på alla andra användare
-
-  echo "Andra användare:" >> "/home/$namn/welcome.txt"
-  cut -d: -f1 /etc/passwd | grep -v "$namn" >> "/home/$namn/welcome.txt"
+  cut -d: -f1 /etc/passwd | grep -v "^$namn$" >> "/home/$namn/welcome.txt"
 
   # Ge användaren ägarskap över sin hemkatalog
   chown -R "$namn":"$namn" "/home/$namn"
