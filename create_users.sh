@@ -7,10 +7,17 @@ then
   exit 1
 fi
 
+# kontrollera att minst ett argument skickas med
+if [ $# -eq 0 ];
+then
+echo "Du glömde skriva namn. Ange .create_users.sh namn1 namn2"
+exit 1
+fi
+
 # Här börjar loopen för alla argument
 for namn in "$@"
 do
-  echo "Nu fixar vi användaren: $namn"
+  echo "nu fixar vi användaren: $namn"
 
   # skapa användaren med hemkatalog
   useradd -m "$namn"
@@ -19,16 +26,16 @@ do
 
   mkdir -p "/home/$namn/Documents" "/home/$namn/Downloads" "/home/$namn/Work"
 
-  # 4. Sätt rättigheter (Endast ägaren)
+  # Sätt rättigheter (Endast ägaren)
   chmod 700 "/home/$namn/Documents" "/home/$namn/Downloads" "/home/$namn/Work"
 
   # 5. Skapa välkomstfilen
   echo "Välkommen $namn" > "/home/$namn/welcome.txt"
  
-  #Lägg till en lista på alla andra användare
+  # Lägg till en lista på alla andra användare
 
   echo "Andra användare:" >> "/home/$namn/welcome.txt"
-  cut -d: -f1 /etc/passwd >> "/home/$namn/welcome.txt"
+  cut -d: -f1 /etc/passwd | grep -v "$namn" >> "/home/$namn/welcome.txt"
 
   # Ge användaren ägarskap över sin hemkatalog
   chown -R "$namn" "/home/$namn"
