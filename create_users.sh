@@ -28,7 +28,7 @@ do
   #Lägg till en lista på alla andra användare
 
   echo "Andra användare:" >> "/home/$namn/welcome.txt"
-  cut -d: -f1 /etc/passwd >> "home/$namn/welcome.txt"
+  cut -d: -f1 /etc/passwd >> "/home/$namn/welcome.txt"
 
   # Ge användaren ägarskap över sin hemkatalog
   chown -R "$namn" "/home/$namn"
@@ -36,6 +36,3 @@ do
   done
 
   echo "allt är klart!"
-  
-
-  
