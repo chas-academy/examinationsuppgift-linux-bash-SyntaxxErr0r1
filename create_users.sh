@@ -29,7 +29,7 @@ do
   # Sätt rättigheter (Endast ägaren)
   chmod 700 "/home/$namn/Documents" "/home/$namn/Downloads" "/home/$namn/Work"
 
-  # 5. Skapa välkomstfilen
+  #  Skapa välkomstfilen
   echo "Välkommen $namn" > "/home/$namn/welcome.txt"
  
   # Lägg till en lista på alla andra användare
@@ -38,8 +38,7 @@ do
   cut -d: -f1 /etc/passwd | grep -v "$namn" >> "/home/$namn/welcome.txt"
 
   # Ge användaren ägarskap över sin hemkatalog
-  chown -R "$namn" "/home/$namn"
-
-  done
+  chown -R "$namn":"$namn" "/home/$namn"
+done
 
   echo "allt är klart!"
